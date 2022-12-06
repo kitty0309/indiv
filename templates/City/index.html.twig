@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}City index{% endblock %}
+
+{% block body %}
+
+
+<h1>Menu:</h1>
+        <a href="{{ path('City_index')}}">Go to City</a></br>
+        <a href="{{ path('Country_index')}}">Go to Country</a></br></br></br>
+
+    <h2>City index</h2>
+    <input class="form-control" id="name" name="name" type="text"> <br>
+    <input class="btn btn-primary" onclick="send()" type="submit" value="Find by name">
+
+    <script>
+        function send() {
+            let name = document.getElementById("name").value;
+            let url = 'http://localhost:8000/City';
+            if(name !== undefined && name !== ''){
+                url = `http://localhost:8000/City/find/${name}`;
+            }
+                window.location = url;
+            
+        }
+    </script>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Weather</th>
+                <th>Country</th>
+                <th>Buttons</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for City in Cities %}
+            <tr>
+                <td>{{ City.id }}</td>
+                <td>{{ City.name }}</td>
+                <td>{{ City.weather }}</td>
+                <td>{{ City.country }}</td>
+                <td>
+                    <a href="{{ path('City_show', {'id': City.id}) }}">show</a>
+                    <a href="{{ path('City_edit', {'id': City.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('City_new') }}">Create new</a>
+{% endblock %}
